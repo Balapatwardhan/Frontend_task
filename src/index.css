@@ -67,3 +67,23 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* Custom Calendar Styling */
+.react-calendar {
+  width: 100% !important;
+  max-width: 600px; /* Adjust as needed */
+  height: auto !important;
+}
+
+/* Increase calendar cell size */
+.react-calendar__tile {
+  height: 100px !important; /* Make cells bigger */
+  font-size: 1.3rem !important; /* Bigger date numbers */
+  text-align: center;
+}
+
+/* Highlight event days */
+.react-calendar__tile--active {
+  background: #8b5cf6 !important; /* Purple highlight */
+  color: white !important;
+  border-radius: 10px;
+}
