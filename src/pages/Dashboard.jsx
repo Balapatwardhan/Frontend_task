@@ -38,10 +38,10 @@ const Dashboard = () => {
       
       {/* Main content */}
       <main className="flex-1 p-6 w-320">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        <h2 className="text-2xl font-bold mb-3">Dashboard</h2>
         
         {/* Header section with profile and welcome message */}
-        <div className="bg-purple-400 rounded-lg p-6 mb-6 text-white flex items-center justify-between">
+        <div className="bg-purple-700 rounded-lg p-6 mb-6 text-white flex items-center justify-between">
           <div className="max-w-md">
             <h2 className="text-2xl font-bold mb-2">Hello, {userData.name}</h2>
             <p className="text-white/90">

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Sidebar = ({ activePage }) => {
   return (
     <div className="w-64 bg-white h-screen p-4 flex flex-col">
-      <h1 className="text-2xl font-bold mb-10">Task Tracker</h1>
+      <h1 className="text-2xl font-bold mb-10">TaskUp</h1>
       
       <nav className="flex flex-col space-y-4 flex-grow">
         <SidebarItem 

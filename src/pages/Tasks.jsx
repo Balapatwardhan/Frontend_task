@@ -13,7 +13,9 @@ const Tasks = () => {
       priority: 'High',
       lastUpdated: '1 hour ago',
       expanded: false,
-      subtasks: []
+      subtasks: [],
+      timeSpent: 0,
+      isRunning: false
     },
     {
       id: 2,
@@ -22,7 +24,9 @@ const Tasks = () => {
       priority: 'Low',
       lastUpdated: 'Yesterday',
       expanded: false,
-      subtasks: []
+      subtasks: [],
+      timeSpent: 0,
+      isRunning: false
     },
     {
       id: 3,
@@ -31,10 +35,25 @@ const Tasks = () => {
       priority: 'Medium',
       lastUpdated: 'Yesterday',
       expanded: false,
-      subtasks: []
+      subtasks: [],
+      timeSpent: 0,
+      isRunning: false
     }
   ]);
 
+  // ⏳ Timer logic: Updates time every second for running tasks
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.isRunning ? { ...task, timeSpent: task.timeSpent + 1 } : task
+        )
+      );
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, []);
+  
   // State for search query
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -63,6 +82,40 @@ const Tasks = () => {
         ? { ...task, expanded: !task.expanded } 
         : task
     ));
+  };
+
+  // 🟢 Start Timer
+  const startTimer = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, isRunning: true } : task
+      )
+    );
+  };
+  
+  // 🔴 Stop Timer
+  const stopTimer = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, isRunning: false } : task
+      )
+    );
+  };
+  
+  // 🔄 Reset Timer
+  const resetTimer = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, isRunning: false, timeSpent: 0 } : task
+      )
+    );
+  };
+  
+  // ⏳ Format Time (hh:mm:ss)
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    return `${hours}h ${minutes % 60}m ${seconds % 60}s`;
   };
 
   // Handle opening the action menu
@@ -105,7 +158,9 @@ const Tasks = () => {
       ...taskData,
       lastUpdated: 'Just now',
       expanded: false,
-      subtasks: []
+      subtasks: [],
+      timeSpent: 0,
+      isRunning: false
     };
     setTasks([...tasks, newTask]);
   };
@@ -206,7 +261,7 @@ const Tasks = () => {
             </div>
             
             <button
-              className="ml-4 flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+              className="ml-4 flex items-center px-4 py-2 bg-purple-500 text-black rounded-lg hover:bg-purple-600 transition"
               onClick={() => {
                 setSelectedTask(null);
                 setIsModalOpen(true);
@@ -219,13 +274,14 @@ const Tasks = () => {
           
           {/* Tasks Table - Flex-grow and overflow handling */}
           <div className="bg-white rounded-lg shadow flex-grow flex flex-col overflow-hidden">
-            {/* Table Header */}
+            {/* Table Header - Fixed alignment issues */}
             <div className="grid grid-cols-12 bg-blue-50 p-4 border-b text-sm font-medium text-blue-800">
-              <div className="col-span-4">Task</div>
+              <div className="col-span-3">Task</div>
               <div className="col-span-2">Status</div>
               <div className="col-span-2">Priority</div>
               <div className="col-span-2">Last Updated</div>
-              <div className="col-span-2 text-center">Action</div>
+              <div className="col-span-2 text-center">Time Spent</div>
+              <div className="col-span-1 text-center">Actions</div>
             </div>
             
             {/* Table Body with overflow */}
@@ -237,16 +293,44 @@ const Tasks = () => {
               ) : (
                 filteredTasks.map(task => (
                   <div key={task.id}>
-                    {/* Task Row */}
+                    {/* Task Row - Fixed alignment issues */}
                     <div className="grid grid-cols-12 p-4 border-b items-center hover:bg-gray-50">
-                      <div className="col-span-4 font-medium">{task.title}</div>
+                      <div className="col-span-3 font-medium">{task.title}</div>
                       <div className="col-span-2">{getStatusBadge(task.status)}</div>
                       <div className="col-span-2">{getPriorityBadge(task.priority)}</div>
                       <div className="col-span-2 text-gray-500 text-sm">{task.lastUpdated}</div>
-                      <div className="col-span-2 flex justify-center items-center space-x-2">
+                      
+                      {/* ⏳ Time Spent Column - Reorganized to contain both display and controls */}
+                      <div className="col-span-2 flex items-center justify-between">
+                        <span className="font-medium">{formatTime(task.timeSpent || 0)}</span>
+                        {/* Timer Controls */}
+                        <div className="flex">
+                          {task.isRunning ? (
+                            <button
+                              onClick={() => stopTimer(task.id)}
+                              className="text-red-500 px-1 rounded-md"
+                              title="Stop Timer"
+                            >
+                              ⏹️
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => startTimer(task.id)}
+                              className="text-green-500 px-1 rounded-md"
+                              title="Start Timer"
+                            >
+                              ▶️
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Actions Column - Clearly separated from timer controls */}
+                      <div className="col-span-1 flex justify-end space-x-2">
                         <button
                           className="p-1 hover:bg-gray-100 rounded"
                           onClick={(e) => handleActionMenu(`task-${task.id}`, e)}
+                          title="More Options"
                         >
                           <MoreVertical size={18} />
                         </button>
@@ -254,13 +338,14 @@ const Tasks = () => {
                         <button
                           className="p-1 hover:bg-gray-100 rounded"
                           onClick={() => toggleExpand(task.id)}
+                          title={task.expanded ? "Collapse" : "Expand"}
                         >
                           {task.expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                         </button>
                         
                         {/* Action Menu */}
                         {actionMenuVisible === `task-${task.id}` && (
-                          <div className="absolute mt-32 right-10 bg-white shadow-lg rounded-lg z-10 w-48 py-1">
+                          <div className="absolute right-10 mt-32 bg-white shadow-lg rounded-lg z-10 w-48 py-1">
                             <button
                               className="w-full text-left px-4 py-2 hover:bg-gray-100"
                               onClick={() => openEditTaskForm(task)}
@@ -310,7 +395,7 @@ const Tasks = () => {
                               <div className="col-span-2">{getStatusBadge(subtask.status)}</div>
                               <div className="col-span-2">{getPriorityBadge(subtask.priority)}</div>
                               <div className="col-span-2 text-gray-500 text-sm">{subtask.deadline || 'No deadline'}</div>
-                              <div className="col-span-2 flex justify-center">
+                              <div className="col-span-2 flex justify-end">
                                 <button
                                   className="p-1 hover:bg-gray-200 rounded"
                                   onClick={(e) => handleActionMenu(`subtask-${subtask.id}`, e)}
@@ -320,7 +405,7 @@ const Tasks = () => {
                                 
                                 {/* Subtask Action Menu */}
                                 {actionMenuVisible === `subtask-${subtask.id}` && (
-                                  <div className="absolute mt-24 right-10 bg-white shadow-lg rounded-lg z-10 w-48 py-1">
+                                  <div className="absolute right-10 mt-24 bg-white shadow-lg rounded-lg z-10 w-48 py-1">
                                     <button className="w-full text-left px-4 py-2 hover:bg-gray-100">
                                       Update Subtask
                                     </button>

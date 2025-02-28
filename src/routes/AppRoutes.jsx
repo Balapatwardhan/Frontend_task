@@ -5,7 +5,7 @@ import Tasks from "../pages/Tasks";
 import TrackProgress from "../pages/TrackProgress";
 import React from "react";
 import AuthPage from "../pages/Login";
-// import Calendar from "../pages/Calendar";
+import Calendar from "../pages/Calendar";
 
 const AppRoutes = () => {
   return (
@@ -16,7 +16,7 @@ const AppRoutes = () => {
       <Route path="/progress" element={<TrackProgress />} />
       <Route path="/login" element={<AuthPage />} />
       {/* Uncomment below if Calendar is needed */}
-      {/* <Route path="/calendar" element={<Calendar />} /> */}
+      <Route path="/calendar" element={<Calendar />} />
     </Routes>
   );
 };

@@ -10,9 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@schedule-x/calendar": "^2.21.0",
+    "@schedule-x/events-service": "^2.21.0",
+    "@schedule-x/react": "^2.21.0",
+    "@schedule-x/theme-default": "^2.21.0",
     "@tailwindcss/vite": "^4.0.9",
     "lucide-react": "^0.476.0",
     "react": "^19.0.0",
+    "react-calendar": "^5.1.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0",
     "recharts": "^2.15.1"

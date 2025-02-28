@@ -7,8 +7,8 @@ const AuthForm = ({ type, switchAuth }) => {
   return (
     <div className="flex min-h-screen w-screen">
       {/* Left Section */}
-      <div className="w-1/2 bg-gradient-to-br from-purple-700 to-indigo-900 text-white flex flex-col justify-center items-center p-10">
-        <h1 className="text-3xl font-bold">CodeSquid</h1>
+      <div className="w-1/2 bg-gradient-to-br from-purple-700 to-indigo-900 text-black flex flex-col justify-center items-center p-10">
+        <h1 className="text-3xl font-bold">TaskUp</h1>
         <p className="text-lg mt-4">Online Community For Front-end Developers</p>
       </div>
       
@@ -20,10 +20,10 @@ const AuthForm = ({ type, switchAuth }) => {
         
         {/* OAuth Buttons */}
         <div className="flex space-x-4">
-          <button className="bg-purple-500 text-white border p-2 rounded-lg flex items-center gap-2">
+          <button className="bg-purple-500 text-black border p-2 rounded-lg flex items-center gap-2">
             <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google" /> Sign {isSignUp ? "up" : "in"} with Google
           </button>
-          <button className="bg-purple-500 text-white border p-2 rounded-lg flex items-center gap-2">
+          <button className="bg-purple-500 text-black border p-2 rounded-lg flex items-center gap-2">
             <img src="https://img.icons8.com/ios-glyphs/24/github.png" alt="GitHub" /> Sign {isSignUp ? "up" : "in"} with GitHub
           </button>
         </div>
@@ -43,7 +43,7 @@ const AuthForm = ({ type, switchAuth }) => {
             </label>
           </div>
           
-          <button className="w-full bg-purple-600 text-white p-3 rounded-md mt-4 hover:bg-purple-700 font-semibold">
+          <button className="w-full bg-purple-600 text-black p-3 rounded-md mt-4 hover:bg-purple-700 font-semibold">
             {isSignUp ? "Sign Up" : "Log In"}
           </button>
         </form>
