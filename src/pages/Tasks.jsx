@@ -185,20 +185,20 @@ const Tasks = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen w-screen overflow-hidden bg-gray-50">
       {/* Sidebar component */}
       <Sidebar />
       
       {/* Main content */}
-      <main className="flex-1 p-6">
-        <div className="max-w-6xl mx-auto">
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <div className="p-6 flex-grow overflow-hidden flex flex-col">
           {/* Header with search and create button */}
           <div className="flex justify-between items-center mb-6">
-            <div className="relative">
+            <div className="relative w-full max-w-md">
               <input
                 type="text"
                 placeholder="Search Something..."
-                className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -206,7 +206,7 @@ const Tasks = () => {
             </div>
             
             <button
-              className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+              className="ml-4 flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
               onClick={() => {
                 setSelectedTask(null);
                 setIsModalOpen(true);
@@ -217,8 +217,8 @@ const Tasks = () => {
             </button>
           </div>
           
-          {/* Tasks Table */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          {/* Tasks Table - Flex-grow and overflow handling */}
+          <div className="bg-white rounded-lg shadow flex-grow flex flex-col overflow-hidden">
             {/* Table Header */}
             <div className="grid grid-cols-12 bg-blue-50 p-4 border-b text-sm font-medium text-blue-800">
               <div className="col-span-4">Task</div>
@@ -228,8 +228,8 @@ const Tasks = () => {
               <div className="col-span-2 text-center">Action</div>
             </div>
             
-            {/* Table Body */}
-            <div>
+            {/* Table Body with overflow */}
+            <div className="flex-grow overflow-y-auto">
               {filteredTasks.length === 0 ? (
                 <div className="p-6 text-center text-gray-500">
                   No tasks found. Create a new task to get started.
